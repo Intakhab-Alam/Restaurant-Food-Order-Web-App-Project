@@ -1,0 +1,216 @@
+﻿@model RestaurantFoodOrder.Models.FoodCategory
+@using RestaurantFoodOrder.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "AddFoodCategory";
+
+    List<FoodCategory> ListofCategory = new List<FoodCategory>();
+
+    if (ViewBag.PreviousFoodCategories != null)
+    {
+        ListofCategory = ViewBag.PreviousFoodCategories;
+    }
+}
+<style>
+    .card {
+        box-shadow: 5px 5px 8px 2px rgba(18, 17, 17, 0.34);
+        transition: 0.3s;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    #card2 {
+        background-color: rgba(226, 232, 246, 0.79)
+    }
+</style>
+
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-info">Restaurant Food Categories</h2>
+            
+        </div>
+        <div class="card-body">
+            @if (ViewBag.PreviousFoodCategories != null)
+            {
+                <table class="table table-bordered table-responsive" id="previouscategory">
+                    <thead>
+                        <tr>
+                            <th>
+                                Category ID
+                            </th>
+                            <th>
+                                Category Name
+                            </th>
+                            <th>
+                                Veg or Non-Veg
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ListofCategory)
+                        {
+                            <tr>
+                                <td>
+                                    @item.FoodCategoryid
+                                </td>
+                                <td class="catname">
+                                    @item.CategoryName
+                                </td>
+                                <td class="mainid">
+                                    @item.FoodMainID
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="card" id="card2">
+        <div class="card-header">
+            <h2 class="text-info">Add Food Category</h2>
+            <hr />
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FoodMainID, "FoodMainID", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @*@Html.DropDownList("FoodMainID", null, htmlAttributes: new { @class = "form-control" })*@
+                            @Html.DropDownListFor(Model => Model.FoodMainID, new SelectList(ViewBag.FoodMainID as System.Collections.IEnumerable, "mainid", "maincategory"), "Select a Food Type", new { id = "FoodMainID", @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.FoodMainID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" value="Add Food Category" id="btn_addcategory" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            }
+            <hr />
+            <div class="row text-center">
+                <a name="back" href="/Restaurant/ControlPanel/ControlPanelhome" class="btn btn-info">Back to Control Panel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var categorynameerror = false;
+
+            if ($("#previouscategory tbody tr td.mainid").text().trim() != '') {
+
+                $("#previouscategory tbody tr td.mainid").each(function () {
+                    var mainid = $(this).text().trim();
+                    switch (mainid) {
+                        case "1":
+                            $(this).text('Veg');
+                            break;
+                        case "2":
+                            $(this).text('Non-Veg');
+                            break;
+                        case "3":
+                            $(this).text('Veg & Non-Veg Both');
+                            break;
+                    }
+                })
+            }
+            // Check Category Name doesnot exist
+            //$("#CategoryName").blur(function () {
+            //    //if ($("#previouscategory tbody tr td.catname").text() != '') {
+            //        $("#previouscategory tbody tr td.catname").each(function () {
+            //            if ($("#CategoryName").val().trim() == $(this).text().trim()) {
+            //                alert('This category name is already added');
+            //                $("#CategoryName").val('');
+            //                return false;
+            //            }
+
+            //        })
+            //    //}
+            //})
+
+            // Add Food Category Code Start
+            $("#btn_addcategory").click(function () {
+                if (($("#CategoryName").val() != null) & ($("#FoodMainID option:selected").val() != '')) {
+                    var data = { "CategoryName": $("#CategoryName").val().trim(), "FoodMainID": $("#FoodMainID option:selected").val() }
+                    $.ajax({
+                        url: "/Restaurant/AjaxCall/InsertFoodCategory",
+                        type: "POST",
+
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (status) {
+                            if (status == "exception") {
+                                alert('Something went Wrong');
+                                return false;
+
+                            }
+                            else if (status == "sessionissue") {
+                                alert('Session Expired Relogin');
+                                location.href = '/Restaurant/RestaurantHome/Login';
+
+                            }
+                            else if (status == "sameitem") {
+                                alert('Same Category Name of Food are already added.Please check table.');
+                                return false;
+                            }
+                            else if (status == "added") {
+                                alert('Food Category is Added Successfully');
+                                location.href = '/Restaurant/ControlPanel/AddFoodCategory';
+
+                            }
+                            else {
+                                alert('Something went wrong , Please try again');
+                                return false;
+                            }
+                        },
+                        error: function () {
+                            alert('Something went wrong , Please try again')
+                        }
+
+                    })
+                }
+                else {
+                    alert('Please Add Category and Food Type');
+                    return false;
+                }
+
+            })
+            // Add Category Code End
+
+
+        });
+
+
+    </script>
+
+}

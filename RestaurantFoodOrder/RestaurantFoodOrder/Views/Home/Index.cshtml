@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="jumbotron">
+    <h1>Best Food is Waiting for You</h1>
+    <p class="lead">Welcome to Our Restaurant App.</p>
+    <p><a href="#" class="btn btn-primary btn-lg">We Find Best Food for You</a></p>
+</div>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Veg Food</h2>
+            <p>
+                <a href="/Customer/Menu/ViewMenu?itemtype=1">
+                    <img src="~/Images/VEG.jpg" />
+                </a>
+            </p>
+
+        </div>
+        <div class="col-md-4">
+            <h2>Non-Veg</h2>
+            <p>
+                <a href="/Customer/Menu/ViewMenu?itemtype=2">
+                    <img src="~/Images/nonveg.jpg" />
+                </a>
+            </p>
+
+        </div>
+        <div class="col-md-4">
+            <h2>Veg & Non-Veg Both</h2>
+            <p>
+                <a href="/Customer/Menu/ViewMenu?itemtype=3">
+                    <img src="~/Images/Veg&Non.jpg" />
+                </a>
+            </p>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,602 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RestaurantFoodDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FoodCategory">
+          <Key>
+            <PropertyRef Name="FoodCategoryid" />
+          </Key>
+          <Property Name="FoodCategoryid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" />
+          <Property Name="FoodMainID" Type="int" Nullable="false" />
+          <Property Name="RestaurentID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MainFoodType">
+          <Key>
+            <PropertyRef Name="mainid" />
+          </Key>
+          <Property Name="mainid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="maincategory" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MenuItems">
+          <Key>
+            <PropertyRef Name="menuitemid" />
+          </Key>
+          <Property Name="menuitemid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="itemname" Type="nvarchar(max)" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="price" Type="int" />
+          <Property Name="restaurentid" Type="int" Nullable="false" />
+          <Property Name="FoodCategoryID" Type="int" Nullable="false" />
+          <Property Name="MainFoodCategoryID" Type="int" Nullable="false" />
+          <Property Name="itempic" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="orderid" />
+          </Key>
+          <Property Name="orderid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderByUser" Type="int" Nullable="false" />
+          <Property Name="RestaurentID" Type="int" Nullable="false" />
+          <Property Name="MenuItemID" Type="int" Nullable="false" />
+          <Property Name="price" Type="int" />
+          <Property Name="orderdate" Type="varchar" MaxLength="50" />
+          <Property Name="session" Type="nvarchar(max)" />
+          <Property Name="paymentdone" Type="bit" Nullable="false" />
+          <Property Name="finalorder" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RestaurentRegistration">
+          <Key>
+            <PropertyRef Name="RestaurentId" />
+          </Key>
+          <Property Name="RestaurentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurentEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="emailvarified" Type="bit" />
+          <Property Name="RestaurentCategory" Type="int" Nullable="false" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="Mobile" Type="bigint" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Regdate" Type="varchar" MaxLength="50" />
+          <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RestaurentName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="confirmpassword" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="nvarchar(max)" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" />
+          <Property Name="userfoodpreference" Type="int" />
+          <Property Name="emailvarified" Type="bit" />
+          <Property Name="regdate" Type="varchar" MaxLength="50" />
+          <Property Name="guid" Type="uniqueidentifier" />
+          <Property Name="mobile" Type="bigint" />
+          <Property Name="confirmpassword" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_FoodCategory_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="1" />
+          <End Role="FoodCategory" Type="Self.FoodCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="FoodCategory">
+              <PropertyRef Name="FoodMainID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodCategory_RestaurentRegistration">
+          <End Role="RestaurentRegistration" Type="Self.RestaurentRegistration" Multiplicity="1" />
+          <End Role="FoodCategory" Type="Self.FoodCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurentRegistration">
+              <PropertyRef Name="RestaurentId" />
+            </Principal>
+            <Dependent Role="FoodCategory">
+              <PropertyRef Name="RestaurentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuItems_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="1" />
+          <End Role="MenuItems" Type="Self.MenuItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="MenuItems">
+              <PropertyRef Name="MainFoodCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_MenuItems">
+          <End Role="MenuItems" Type="Self.MenuItems" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuItems">
+              <PropertyRef Name="menuitemid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="MenuItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_RestaurentRegistration">
+          <End Role="RestaurentRegistration" Type="Self.RestaurentRegistration" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurentRegistration">
+              <PropertyRef Name="RestaurentId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="RestaurentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OrderByUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurentRegistration_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="1" />
+          <End Role="RestaurentRegistration" Type="Self.RestaurentRegistration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="RestaurentRegistration">
+              <PropertyRef Name="RestaurentCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="userfoodpreference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_UpdateOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerID" Type="int" Mode="In" />
+          <Parameter Name="SessionID" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="RestaurantFoodDBModelStoreContainer">
+          <EntitySet Name="FoodCategory" EntityType="Self.FoodCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MainFoodType" EntityType="Self.MainFoodType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuItems" EntityType="Self.MenuItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurentRegistration" EntityType="Self.RestaurentRegistration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FoodCategory_MainFoodType" Association="Self.FK_FoodCategory_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="FoodCategory" EntitySet="FoodCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodCategory_RestaurentRegistration" Association="Self.FK_FoodCategory_RestaurentRegistration">
+            <End Role="RestaurentRegistration" EntitySet="RestaurentRegistration" />
+            <End Role="FoodCategory" EntitySet="FoodCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuItems_MainFoodType" Association="Self.FK_MenuItems_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="MenuItems" EntitySet="MenuItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_MenuItems" Association="Self.FK_Orders_MenuItems">
+            <End Role="MenuItems" EntitySet="MenuItems" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_RestaurentRegistration" Association="Self.FK_Orders_RestaurentRegistration">
+            <End Role="RestaurentRegistration" EntitySet="RestaurentRegistration" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_User" Association="Self.FK_Orders_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurentRegistration_MainFoodType" Association="Self.FK_RestaurentRegistration_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="RestaurentRegistration" EntitySet="RestaurentRegistration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_MainFoodType" Association="Self.FK_User_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RestaurantFoodDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FoodCategory">
+          <Key>
+            <PropertyRef Name="FoodCategoryid" />
+          </Key>
+          <Property Name="FoodCategoryid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FoodMainID" Type="Int32" Nullable="false" />
+          <Property Name="RestaurentID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MainFoodType" Relationship="Self.FK_FoodCategory_MainFoodType" FromRole="FoodCategory" ToRole="MainFoodType" />
+          <NavigationProperty Name="RestaurentRegistration" Relationship="Self.FK_FoodCategory_RestaurentRegistration" FromRole="FoodCategory" ToRole="RestaurentRegistration" />
+        </EntityType>
+        <EntityType Name="MainFoodType">
+          <Key>
+            <PropertyRef Name="mainid" />
+          </Key>
+          <Property Name="mainid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="maincategory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FoodCategory" Relationship="Self.FK_FoodCategory_MainFoodType" FromRole="MainFoodType" ToRole="FoodCategory" />
+          <NavigationProperty Name="MenuItems" Relationship="Self.FK_MenuItems_MainFoodType" FromRole="MainFoodType" ToRole="MenuItems" />
+          <NavigationProperty Name="RestaurentRegistration" Relationship="Self.FK_RestaurentRegistration_MainFoodType" FromRole="MainFoodType" ToRole="RestaurentRegistration" />
+          <NavigationProperty Name="User" Relationship="RestaurantFoodDBModel.FK_User_MainFoodType" FromRole="MainFoodType" ToRole="User" />
+        </EntityType>
+        <EntityType Name="MenuItems">
+          <Key>
+            <PropertyRef Name="menuitemid" />
+          </Key>
+          <Property Name="menuitemid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="itemname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="restaurentid" Type="Int32" Nullable="false" />
+          <Property Name="FoodCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="MainFoodCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="itempic" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MainFoodType" Relationship="Self.FK_MenuItems_MainFoodType" FromRole="MenuItems" ToRole="MainFoodType" />
+          <NavigationProperty Name="Orders" Relationship="RestaurantFoodDBModel.FK_Orders_MenuItems" FromRole="MenuItems" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="RestaurentRegistration">
+          <Key>
+            <PropertyRef Name="RestaurentId" />
+          </Key>
+          <Property Name="RestaurentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurentEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="emailvarified" Type="Boolean" />
+          <Property Name="RestaurentCategory" Type="Int32" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="Int64" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Regdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="guid" Type="Guid" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RestaurentName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="confirmpassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FoodCategory" Relationship="Self.FK_FoodCategory_RestaurentRegistration" FromRole="RestaurentRegistration" ToRole="FoodCategory" />
+          <NavigationProperty Name="MainFoodType" Relationship="Self.FK_RestaurentRegistration_MainFoodType" FromRole="RestaurentRegistration" ToRole="MainFoodType" />
+          <NavigationProperty Name="Orders" Relationship="RestaurantFoodDBModel.FK_Orders_RestaurentRegistration" FromRole="RestaurentRegistration" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_FoodCategory_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="1" />
+          <End Role="FoodCategory" Type="Self.FoodCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="FoodCategory">
+              <PropertyRef Name="FoodMainID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodCategory_RestaurentRegistration">
+          <End Role="RestaurentRegistration" Type="Self.RestaurentRegistration" Multiplicity="1" />
+          <End Role="FoodCategory" Type="Self.FoodCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurentRegistration">
+              <PropertyRef Name="RestaurentId" />
+            </Principal>
+            <Dependent Role="FoodCategory">
+              <PropertyRef Name="RestaurentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuItems_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="1" />
+          <End Role="MenuItems" Type="Self.MenuItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="MenuItems">
+              <PropertyRef Name="MainFoodCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurentRegistration_MainFoodType">
+          <End Role="MainFoodType" Type="Self.MainFoodType" Multiplicity="1" />
+          <End Role="RestaurentRegistration" Type="Self.RestaurentRegistration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="RestaurentRegistration">
+              <PropertyRef Name="RestaurentCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RestaurantFoodDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FoodCategory" EntityType="Self.FoodCategory" />
+          <EntitySet Name="MainFoodType" EntityType="Self.MainFoodType" />
+          <EntitySet Name="MenuItems" EntityType="Self.MenuItems" />
+          <EntitySet Name="RestaurentRegistration" EntityType="Self.RestaurentRegistration" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_FoodCategory_MainFoodType" Association="Self.FK_FoodCategory_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="FoodCategory" EntitySet="FoodCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodCategory_RestaurentRegistration" Association="Self.FK_FoodCategory_RestaurentRegistration">
+            <End Role="RestaurentRegistration" EntitySet="RestaurentRegistration" />
+            <End Role="FoodCategory" EntitySet="FoodCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuItems_MainFoodType" Association="Self.FK_MenuItems_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="MenuItems" EntitySet="MenuItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurentRegistration_MainFoodType" Association="Self.FK_RestaurentRegistration_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="RestaurentRegistration" EntitySet="RestaurentRegistration" />
+          </AssociationSet>
+          <FunctionImport Name="sp_UpdateOrder">
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="SessionID" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="User" EntityType="RestaurantFoodDBModel.User" />
+          <AssociationSet Name="FK_User_MainFoodType" Association="RestaurantFoodDBModel.FK_User_MainFoodType">
+            <End Role="MainFoodType" EntitySet="MainFoodType" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <EntitySet Name="Orders" EntityType="RestaurantFoodDBModel.Orders" />
+          <AssociationSet Name="FK_Orders_MenuItems" Association="RestaurantFoodDBModel.FK_Orders_MenuItems">
+            <End Role="MenuItems" EntitySet="MenuItems" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_RestaurentRegistration" Association="RestaurantFoodDBModel.FK_Orders_RestaurentRegistration">
+            <End Role="RestaurentRegistration" EntitySet="RestaurentRegistration" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_User" Association="RestaurantFoodDBModel.FK_Orders_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="userfoodpreference" Type="Int32" />
+          <Property Name="emailvarified" Type="Boolean" />
+          <Property Name="regdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="guid" Type="Guid" />
+          <Property Name="mobile" Type="Int64" />
+          <Property Name="confirmpassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MainFoodType" Relationship="RestaurantFoodDBModel.FK_User_MainFoodType" FromRole="User" ToRole="MainFoodType" />
+          <NavigationProperty Name="Orders" Relationship="RestaurantFoodDBModel.FK_Orders_User" FromRole="User" ToRole="Orders" />
+        </EntityType>
+        <Association Name="FK_User_MainFoodType">
+          <End Type="RestaurantFoodDBModel.MainFoodType" Role="MainFoodType" Multiplicity="0..1" />
+          <End Type="RestaurantFoodDBModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainFoodType">
+              <PropertyRef Name="mainid" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="userfoodpreference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="orderid" />
+          </Key>
+          <Property Name="orderid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderByUser" Type="Int32" Nullable="false" />
+          <Property Name="RestaurentID" Type="Int32" Nullable="false" />
+          <Property Name="MenuItemID" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="orderdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="session" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="paymentdone" Type="Boolean" Nullable="false" />
+          <Property Name="finalorder" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MenuItems" Relationship="RestaurantFoodDBModel.FK_Orders_MenuItems" FromRole="Orders" ToRole="MenuItems" />
+          <NavigationProperty Name="RestaurentRegistration" Relationship="RestaurantFoodDBModel.FK_Orders_RestaurentRegistration" FromRole="Orders" ToRole="RestaurentRegistration" />
+          <NavigationProperty Name="User" Relationship="RestaurantFoodDBModel.FK_Orders_User" FromRole="Orders" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Orders_MenuItems">
+          <End Type="RestaurantFoodDBModel.MenuItems" Role="MenuItems" Multiplicity="1" />
+          <End Type="RestaurantFoodDBModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuItems">
+              <PropertyRef Name="menuitemid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="MenuItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_RestaurentRegistration">
+          <End Type="RestaurantFoodDBModel.RestaurentRegistration" Role="RestaurentRegistration" Multiplicity="1" />
+          <End Type="RestaurantFoodDBModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurentRegistration">
+              <PropertyRef Name="RestaurentId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="RestaurentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_User">
+          <End Type="RestaurantFoodDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="RestaurantFoodDBModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OrderByUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RestaurantFoodDBModelStoreContainer" CdmEntityContainer="RestaurantFoodDBEntities">
+          <EntitySetMapping Name="FoodCategory">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.FoodCategory">
+              <MappingFragment StoreEntitySet="FoodCategory">
+                <ScalarProperty Name="FoodCategoryid" ColumnName="FoodCategoryid" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="FoodMainID" ColumnName="FoodMainID" />
+                <ScalarProperty Name="RestaurentID" ColumnName="RestaurentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MainFoodType">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.MainFoodType">
+              <MappingFragment StoreEntitySet="MainFoodType">
+                <ScalarProperty Name="mainid" ColumnName="mainid" />
+                <ScalarProperty Name="maincategory" ColumnName="maincategory" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuItems">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.MenuItems">
+              <MappingFragment StoreEntitySet="MenuItems">
+                <ScalarProperty Name="menuitemid" ColumnName="menuitemid" />
+                <ScalarProperty Name="itemname" ColumnName="itemname" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="restaurentid" ColumnName="restaurentid" />
+                <ScalarProperty Name="FoodCategoryID" ColumnName="FoodCategoryID" />
+                <ScalarProperty Name="MainFoodCategoryID" ColumnName="MainFoodCategoryID" />
+                <ScalarProperty Name="itempic" ColumnName="itempic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurentRegistration">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.RestaurentRegistration">
+              <MappingFragment StoreEntitySet="RestaurentRegistration">
+                <ScalarProperty Name="RestaurentId" ColumnName="RestaurentId" />
+                <ScalarProperty Name="RestaurentEmail" ColumnName="RestaurentEmail" />
+                <ScalarProperty Name="emailvarified" ColumnName="emailvarified" />
+                <ScalarProperty Name="RestaurentCategory" ColumnName="RestaurentCategory" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Regdate" ColumnName="Regdate" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="RestaurentName" ColumnName="RestaurentName" />
+                <ScalarProperty Name="confirmpassword" ColumnName="confirmpassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_UpdateOrder" FunctionName="RestaurantFoodDBModel.Store.sp_UpdateOrder" />
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="confirmpassword" ColumnName="confirmpassword" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="regdate" ColumnName="regdate" />
+                <ScalarProperty Name="emailvarified" ColumnName="emailvarified" />
+                <ScalarProperty Name="userfoodpreference" ColumnName="userfoodpreference" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="RestaurantFoodDBModel.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="finalorder" ColumnName="finalorder" />
+                <ScalarProperty Name="paymentdone" ColumnName="paymentdone" />
+                <ScalarProperty Name="session" ColumnName="session" />
+                <ScalarProperty Name="orderdate" ColumnName="orderdate" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="MenuItemID" ColumnName="MenuItemID" />
+                <ScalarProperty Name="RestaurentID" ColumnName="RestaurentID" />
+                <ScalarProperty Name="OrderByUser" ColumnName="OrderByUser" />
+                <ScalarProperty Name="orderid" ColumnName="orderid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

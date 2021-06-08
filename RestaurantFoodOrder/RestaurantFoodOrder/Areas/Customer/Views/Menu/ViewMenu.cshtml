@@ -1,0 +1,66 @@
+﻿@model IEnumerable<RestaurantFoodOrder.Models.CustomerVM>
+@using RestaurantFoodOrder.Models;
+@{
+    ViewBag.Title = "ViewMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<CustomerVM> obj = new List<CustomerVM>();
+    if (ViewBag.SearchItems != null)
+    {
+        obj = ViewBag.SearchItems;
+    }
+}
+
+<h1 class="text-info">Our Menu</h1>
+
+<div class="container">
+    @if (obj != null)
+    {
+        foreach (var item in obj)
+        {
+            <div class="row" style="padding-bottom:6px; padding-top:20px;">
+                <div class="col-md-3">
+                    <img src="~/Files/@item.MenuItem.itempic" class="img img-responsive img-rounded" width="150px" height="150px" />
+                </div>
+                <div class="col-md-9">
+                    <table class="table table-responsive">
+                        <tr>
+                            <td>Restaurant Name: </td>
+                            <td>
+                                @item.RestaurentRegistration.RestaurentName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Name: </td>
+                            <td>
+                                @item.MenuItem.itemname
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Description: </td>
+                            <td>
+                                @item.MenuItem.description
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Price: </td>
+                            <td>
+                                @item.MenuItem.price
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                <a href="/Customer/Menu/AddtoCart?itemid=@item.MenuItem.menuitemid&restid=@item.MenuItem.restaurentid&price=@item.MenuItem.price" class="btn btn-primary">Add to Cart</a>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                
+            </div>
+            <hr />
+        }
+    }
+
+</div>

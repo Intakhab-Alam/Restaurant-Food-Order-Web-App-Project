@@ -1,0 +1,251 @@
+﻿@model RestaurantFoodOrder.Models.MenuItems
+@using RestaurantFoodOrder.Models;
+
+@{
+    ViewBag.Title = "AddFoodItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<MenuItems> ListofCategory = new List<MenuItems>();
+
+    if (ViewBag.FoodItemsList != null)
+    {
+        ListofCategory = ViewBag.FoodItemsList;
+    }
+}
+@if (ViewBag.FoodItemsList != null)
+{
+<div class="container">
+    <h2 class="text-info">Restaurant Food Item</h2>
+    <hr />
+    <table class="table table-condensed table-responsive" id="previouscategory" style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>
+                    Food Image
+                </th>
+                <th>
+                    Food Item Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Veg or Non-Veg
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ListofCategory)
+            {
+                <tr>
+                    <td>
+                        <img src="~/Files/@item.itempic" class="img img-responsive img-rounded" width="50px" height="50px" />
+                    </td>
+                    <td>
+                        @item.itemname
+                    </td>
+                    <td>
+                        @item.description
+                    </td>
+                    <td>
+                        @item.price
+                    </td>
+                    <td class="mainid">
+                        @item.MainFoodCategoryID
+                    </td>
+                    <td>
+                        <input type="button" id="btnDelete" class="btn btn-danger" value="Delete" onclick="DeleteItem(@item.menuitemid)" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+}
+<hr />
+
+<h2>AddFoodItem</h2>
+
+
+@using (Html.BeginForm("AddFoodItem", "ControlPanel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>MenuItem</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.itemname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.itemname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.itemname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MainFoodCategoryID, "MainFoodCategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("MainFoodCategoryID", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(Model => Model.MainFoodCategoryID, new SelectList(ViewBag.FoodMainID as System.Collections.IEnumerable, "mainid", "maincategory"), "Select a Food Type", new { id = "MainFoodCategoryID", @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.MainFoodCategoryID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FoodCategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownListFor(model => model.FoodCategoryID,null, new { htmlAttributes = new { @class = "form-control" } })*@
+                <select id="FoodCategoryID" name="FoodCategoryID" class="form-control"></select>
+                @Html.ValidationMessageFor(model => model.FoodCategoryID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.itempic, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="itempic" id="itempic" value="" class="form-control" />
+                @Html.ValidationMessageFor(model => model.itempic, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Item" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row text-center">
+    <a name="back" href="/Restaurant/ControlPanel/ControlPanelhome" class="btn btn-info">Back to Control Panel</a>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //  Dropdown options for Food Category when Main Food Category selected
+            $("#MainFoodCategoryID").change(function () {
+
+                if ($("#MainFoodCategoryID option:selected").val() != '') {
+                    // first we to remove options select and then select it will repaet so we have remove options.
+                    $("#FoodCategoryID option").remove();
+
+                    // Get FoodCategories
+                    var data = { "FoodMainID": $("#MainFoodCategoryID option:selected").val().trim() }
+                    $.ajax({
+                        async: true,
+                        url: "/Restaurant/AjaxCall/GetFoodCategory",
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        @*contentType: false,*@
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            if (data.success == true) {
+                                $.each(data.FoodCategory, function (index, value) {
+                                    $("#FoodCategoryID").append('<option rel="' + index + '" value="' + value.FoodCategoryid + '">' + value.CategoryName + '</option>');
+                                })
+
+                                $("#FoodCategoryID").prepend("<option value='' selected='selected'>--Select Food  Category--</option>");
+
+                            }
+                            else {
+                                alert(data.message)
+                            }
+                        },
+                        error: function (err) {
+                            @*console.error(err.statusText);*@
+                            alert('Something went wrong ! , Please try again')
+                        }
+
+                    })
+                }
+
+            });
+            if ($("#previouscategory tbody tr td.mainid").text().trim() != '') {
+
+                $("#previouscategory tbody tr td.mainid").each(function () {
+                    var mainid = $(this).text().trim();
+                    switch (mainid) {
+                        case "1":
+                            $(this).text('Veg');
+                            break;
+                        case "2":
+                            $(this).text('Non-Veg');
+                            break;
+                        case "3":
+                            $(this).text('Veg & Non-Veg Both');
+                            break;
+                    }
+                })
+            }
+        });
+
+    function DeleteItem(menuitemid) {
+        var deleteConfirm = confirm("Are you Sure ! You want to Delete this Food Item ?");
+        if (deleteConfirm == true) {
+            
+            var menuItemId = { MenuItemId: menuitemid }
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: '/Restaurant/AjaxCall/DeleteMenuItem',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(menuItemId),               
+                success: function (data) {
+                    if (data.success === true) {
+                        alert(data.message);
+                        location.href = '/Restaurant/ControlPanel/AddFoodItem';
+                    }
+                },
+                error: function () {
+                    alert('There is some problem to process your request. Please try after sometimes.');
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+        
+    }
+
+
+</script>
+}

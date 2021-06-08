@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RestaurantFoodDBModelStoreContainer" CdmEntityContainer="RestaurantFoodDBEntities">
+    <EntitySetMapping Name="FoodCategory">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.FoodCategory">
+        <MappingFragment StoreEntitySet="FoodCategory">
+          <ScalarProperty Name="FoodCategoryid" ColumnName="FoodCategoryid" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="FoodMainID" ColumnName="FoodMainID" />
+          <ScalarProperty Name="RestaurentID" ColumnName="RestaurentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MainFoodType">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.MainFoodType">
+        <MappingFragment StoreEntitySet="MainFoodType">
+          <ScalarProperty Name="mainid" ColumnName="mainid" />
+          <ScalarProperty Name="maincategory" ColumnName="maincategory" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MenuItems">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.MenuItems">
+        <MappingFragment StoreEntitySet="MenuItems">
+          <ScalarProperty Name="menuitemid" ColumnName="menuitemid" />
+          <ScalarProperty Name="itemname" ColumnName="itemname" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="restaurentid" ColumnName="restaurentid" />
+          <ScalarProperty Name="FoodCategoryID" ColumnName="FoodCategoryID" />
+          <ScalarProperty Name="MainFoodCategoryID" ColumnName="MainFoodCategoryID" />
+          <ScalarProperty Name="itempic" ColumnName="itempic" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RestaurentRegistration">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.RestaurentRegistration">
+        <MappingFragment StoreEntitySet="RestaurentRegistration">
+          <ScalarProperty Name="RestaurentId" ColumnName="RestaurentId" />
+          <ScalarProperty Name="RestaurentEmail" ColumnName="RestaurentEmail" />
+          <ScalarProperty Name="emailvarified" ColumnName="emailvarified" />
+          <ScalarProperty Name="RestaurentCategory" ColumnName="RestaurentCategory" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Regdate" ColumnName="Regdate" />
+          <ScalarProperty Name="guid" ColumnName="guid" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="RestaurentName" ColumnName="RestaurentName" />
+          <ScalarProperty Name="confirmpassword" ColumnName="confirmpassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_UpdateOrder" FunctionName="RestaurantFoodDBModel.Store.sp_UpdateOrder" />
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="confirmpassword" ColumnName="confirmpassword" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="guid" ColumnName="guid" />
+          <ScalarProperty Name="regdate" ColumnName="regdate" />
+          <ScalarProperty Name="emailvarified" ColumnName="emailvarified" />
+          <ScalarProperty Name="userfoodpreference" ColumnName="userfoodpreference" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="RestaurantFoodDBModel.Orders">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="finalorder" ColumnName="finalorder" />
+          <ScalarProperty Name="paymentdone" ColumnName="paymentdone" />
+          <ScalarProperty Name="session" ColumnName="session" />
+          <ScalarProperty Name="orderdate" ColumnName="orderdate" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="MenuItemID" ColumnName="MenuItemID" />
+          <ScalarProperty Name="RestaurentID" ColumnName="RestaurentID" />
+          <ScalarProperty Name="OrderByUser" ColumnName="OrderByUser" />
+          <ScalarProperty Name="orderid" ColumnName="orderid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<RestaurantFoodOrder.Models.CustomerVM>
+@using RestaurantFoodOrder.Models;
+
+@{
+    /**/
+
+    ViewBag.Title = "Myorder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>Previous Orders</h2>
+
+
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem.itemname)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.RestaurentRegistration.RestaurentName)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.User.email)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem.price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.orderdate)
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/Files/@item.MenuItem.itempic" class="img img-responsive img-rounded" width="50px" height="50px" />
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuItem.itemname)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.RestaurentRegistration.RestaurentName)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Order.OrderByUser)
+                    </td>*@
+                <td class="price">
+                    @Html.DisplayFor(modelItem => item.MenuItem.price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order.orderdate)
+                </td>
+
+            </tr>
+        }
+
+
+    </tbody>
+
+</table>
+<hr />
+<a href="/Customer/Menu/MyOrder" class="btn btn-primary">Back to Orders</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

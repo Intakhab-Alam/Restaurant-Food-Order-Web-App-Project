@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Restaurant Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">My Restaurant</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+
+                @if (Session["CustomerID"] != null)
+                {
+                    <li><span class="navbar-brand" style="font-size: 15px;margin-left: 4px;">@Session["CustomerEmail"]</span></li>
+                    <li><a href="/Customer/CustomerHome/CustomerLogout">Logout</a></li>
+                }
+                else
+                {
+                    <li><a href="/Customer/CustomerHome/SignUp">Customer SignUp</a></li>
+                    <li><a href="/Customer/CustomerHome/Login">Customer Login</a></li>
+                }
+                <li><a href="/Customer/Menu/MyOrder">Your Orders</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (Session["RestaurentID"] != null)
+                {
+                    <li><a href="/Restaurant/ControlPanel/ControlPanelhome"><span style="font-size: 25px; margin-right: 10px;">@Session["RestaurentName"]</span></a></li>
+                    <li><a href="/Customer/CustomerHome/CustomerLogout"><span class="glyphicon glyphicon-log-out"></span> Admin Logout</a></li>
+                }
+                else
+                {
+                    <li><a href="/Restaurant/RestaurantHome/Login"><span class="glyphicon glyphicon-log-in"></span> Restaurant Admin Login</a></li>
+                    <li><a href="/Restaurant/RestaurantHome/SignUp"><span class="glyphicon glyphicon-registration-mark"></span> Restaurant SignUp</a></li>
+
+                }
+
+            </ul>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Restaurant Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

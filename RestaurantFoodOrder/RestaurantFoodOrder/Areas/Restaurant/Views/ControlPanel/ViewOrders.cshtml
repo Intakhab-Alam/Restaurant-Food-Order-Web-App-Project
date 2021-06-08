@@ -1,0 +1,95 @@
+﻿@model IEnumerable<RestaurantFoodOrder.Models.CustomerVM>
+@using RestaurantFoodOrder.Models;
+
+@{
+    /**/
+
+    ViewBag.Title = "Myorder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Order</h2>
+
+
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem.itemname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.orderdate)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.User.email)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem.price)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/Files/@item.MenuItem.itempic" class="img img-responsive img-rounded" width="50" height="50" />
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuItem.itemname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order.orderdate)
+                </td>
+                <td class="price">
+                    @Html.DisplayFor(modelItem => item.MenuItem.price)
+                </td>
+
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4" class="text-right" style="font-size: x-large;">Total Price </td>
+            <td colspan="1" id="totalprice" class="text-left" style="font-size: x-large;"></td>
+            
+        </tr>
+
+    </tbody>
+
+</table>
+<hr />
+<div class="row text-center">
+    <a name="back" href="/Restaurant/ControlPanel/ControlPanelhome" class="btn btn-info">Back to Control Panel</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(document).ready(function () {
+            var sum = 0;
+            $(".price").each(function () {
+                sum += parseInt($(this).text());
+            });
+            $("#totalprice").text(sum);
+
+        });
+
+
+    </script>
+}

@@ -1,0 +1,118 @@
+﻿@model IEnumerable<RestaurantFoodOrder.Models.CustomerVM>
+@using RestaurantFoodOrder.Models;
+
+@{
+    /**/
+
+    ViewBag.Title = "Myorder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2 class="text-info">Your Order</h2>
+
+
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem.itemname)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.RestaurentRegistration.RestaurentName)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.User.email)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.MenuItem.price)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/Files/@item.MenuItem.itempic" class="img img-responsive img-rounded" width="50" height="50" />
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuItem.itemname)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.RestaurentRegistration.RestaurentName)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Order.OrderByUser)
+                    </td>*@
+                <td class="price">
+                    @Html.DisplayFor(modelItem => item.MenuItem.price)
+                </td>
+
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td colspan="2" class="text-right" style="font-size: x-large;">Total Price</td>
+            <td colspan="2" id="totalprice" class="text-right" style="font-size: x-large;"></td>
+
+        </tr>
+        <tr>
+            <td colspan="2" class="text-left">
+                <a href="/Customer/Menu/LastOrder" class="btn btn-lg btn-danger">View Previous Order(Click Here)</a>
+            </td>
+            <td colspan="2" class="text-right">
+                <input type="button" class="btn btn-lg btn-primary" id="btn_placeorder" value="Place Order" />
+
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+    $(document).ready(function(){
+        var sum = 0;
+        $(".price").each(function () {
+             sum += parseInt($(this).text());
+        });
+        $("#totalprice").text(sum);
+        $("#btn_placeorder").click(function () {
+
+            $.ajax({
+                url: "/Customer/Menu/PlaceOrder",
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                success: function (status) {
+                    if (status == "done") {
+                        alert('Your Order is successfully added, Our Representative will contact you soon');
+                        location.href = '/';
+                    }
+                    else {
+                        alert('Something went wrong');
+                        location.href = '/';
+                    }
+                },
+                error: function () {
+                    alert('Something went wrong , Please try again')
+                }
+
+            })
+        })
+    })
+
+
+    </script>
+}

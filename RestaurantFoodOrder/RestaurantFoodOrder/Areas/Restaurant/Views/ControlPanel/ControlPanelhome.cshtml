@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "ControlPanelhome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+    #divControlPanel {
+        margin: 10px 0 50px 0;
+    }
+    .card {
+        box-shadow: 5px 5px 8px 2px rgba(18, 17, 17, 0.34);
+        transition: 0.3s;
+        padding: 50px 0 50px 90px;
+        margin-top: 20px;
+    }
+</style>
+
+@*<h2 class="text-info">Restaurant Control Panel</h2>
+    <hr />
+    <table class="table table-responsive">
+        <tr>
+            <td><a href="/Restaurant/ControlPanel/AddFoodCategory"> Add Food Category</a></td>
+            <td><a href="/Restaurant/ControlPanel/AddFoodItem"> Add Food Menu Item</a></td>
+            <td><a href="/Restaurant/ControlPanel/ViewOrders"> View Customer Orders</a></td>
+
+        </tr>
+
+    </table>*@
+
+<div class="container" id="divControlPanel">
+    <div class="row">
+        <h1 class="text-info text-center">Restaurant Control Panel</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    
+                </div>
+                <div class="card-body">
+                    @Html.ActionLink("Add Food Category", "AddFoodCategory", "ControlPanel", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    
+                </div>
+                <div class="card-body">
+                    @Html.ActionLink("Add Food Menu Item", "AddFoodItem", "ControlPanel", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    
+                </div>
+                <div class="card-body">
+                    @Html.ActionLink("View Customer Orders", "ViewOrders", "ControlPanel", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
